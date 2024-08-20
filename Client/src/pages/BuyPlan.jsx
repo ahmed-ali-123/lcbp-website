@@ -93,9 +93,6 @@ const BuyPlan = () => {
       if (!isValidNumber(accountnum)) {
         throw new Error("Account number can only contain numbers");
       }
-      if (method === "") {
-        throw new Error("Please select payment method");
-      }
 
       if (
         !username ||
