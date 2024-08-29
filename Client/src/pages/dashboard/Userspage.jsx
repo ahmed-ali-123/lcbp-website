@@ -162,6 +162,7 @@ const Users = ({ show, scroll }) => {
             return;
           } else {
             setDetails(result.user);
+            console.log(result.user);
             setSearchLoading(false);
           }
         }
@@ -223,6 +224,47 @@ const Users = ({ show, scroll }) => {
       setSearchLoading(false);
     }
   };
+
+  const banAllUsers = async () => {
+    try {
+      const res = window.confirm("Are you sure you want to ban all users?");
+
+      if (res) {
+        const response = await fetch(`${apiUrl}/api/auth/banall`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const result = await response.json();
+        if (!result.success) {
+          toast.error(result.message);
+          return;
+        } else {
+          toast.success("All users banned successfully");
+        }
+      }
+    } catch (e) {
+      toast.error("An unexpected error occured");
+    }
+  };
+  function formatDate(inputDate) {
+    const date = new Date(inputDate);
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? "pm" : "am";
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = date.toLocaleString("default", { month: "short" });
+    const year = date.getFullYear().toString().slice(-2);
+    const formattedDate = `${hours}:${minutes
+      .toString()
+      .padStart(2, "0")}${ampm}, ${day} ${month} ${year}`;
+
+    return formattedDate;
+  }
 
   return (
     <div>
@@ -295,6 +337,12 @@ const Users = ({ show, scroll }) => {
             <p className="userDetailsEmail">
               Chain Five reffers : {res.chainfive || "-"}
             </p>
+            {details.planJoinDate ? (
+              <p>Joined on {formatDate(details.planJoinDate)}</p>
+            ) : null}
+            {details.planUpgradeDate ? (
+              <p>Upgraded on {formatDate(details.planUpgradeDate)}</p>
+            ) : null}
 
             <div className="userdetailbuttons">
               <button
@@ -337,6 +385,16 @@ const Users = ({ show, scroll }) => {
               show();
             }}
           />
+          <div className="searchdiv">
+            <button
+              onClick={() => {
+                // confirm first
+                banAllUsers();
+              }}
+            >
+              Ban All users
+            </button>
+          </div>
           <div className="searchdiv">
             <input
               type="text"
@@ -418,6 +476,7 @@ const Users = ({ show, scroll }) => {
               </button>
             )}
           </div>
+
           <h1 className="usersheading">Users</h1>
           <div className="headings">
             <h3 className="image">Image</h3>
@@ -451,6 +510,12 @@ const Users = ({ show, scroll }) => {
                 <p className="ordered" style={{ color: "rgb(90, 90, 90)" }}>
                   {e.email}
                 </p>
+                {e.planJoinDate ? (
+                  <p>Joined on {formatDate(e.planJoinDate)}</p>
+                ) : null}
+                {e.planUpgradeDate ? (
+                  <p>Upgraded on {formatDate(e.planUpgradeDate)}</p>
+                ) : null}
               </div>
             );
           })}

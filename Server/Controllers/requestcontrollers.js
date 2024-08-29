@@ -246,7 +246,15 @@ module.exports.approveRequest = async (req, res) => {
     const updatedRequest = await requestmodel
       .findByIdAndUpdate(
         requstid,
-        { $set: { pending: false, accepted: true, profit, paid } },
+        {
+          $set: {
+            pending: false,
+            accepted: true,
+            profit,
+            paid,
+            planJoinDate: Date.now(),
+          },
+        },
         { new: true }
       )
       .lean()

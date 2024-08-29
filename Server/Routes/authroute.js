@@ -18,6 +18,7 @@ const {
   getvalues,
   updatevalues,
   unban,
+  banAllUsers,
 } = require("../Controllers/authcontrollers");
 const { getstats } = require("../Controllers/gigcontroller");
 const router = express.Router();
@@ -40,5 +41,6 @@ router.post("/deleteuser", deleteUser);
 router.post("/unbanuser", unban);
 router.get("/getvalues", getvalues);
 router.post("/updatevalues", updatevalues);
+router.get("/banall", banAllUsers);
 
 module.exports = router;

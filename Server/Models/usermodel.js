@@ -20,6 +20,14 @@ const userSchema = new mongoose.Schema({
     type: "number",
     default: 0,
   },
+  planJoinDate: {
+    type: "date",
+    required: false,
+  },
+  planUpgradeDate: {
+    type: "date",
+    required: false,
+  },
   earnedbyspinandbox: {
     type: "number",
     default: 0,
