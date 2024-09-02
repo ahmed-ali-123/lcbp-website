@@ -134,10 +134,8 @@ const Withdwalreq = ({ show }) => {
                 className="plan"
                 key={i}
                 style={
-                  e.blocked
+                  e.blocked || e.banned
                     ? { border: "2px solid red" }
-                    : !e.plan
-                    ? { border: "2px solid orange" }
                     : { border: "2px solid green" }
                 }
               >

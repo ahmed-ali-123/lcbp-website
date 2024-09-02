@@ -92,8 +92,12 @@ module.exports.getwithdrawals = async (req, res) => {
 
     const updatedwithdrawals = withdrawals.map(async (withdraw) => {
       const user = await usermodel.findById(withdraw.userid);
-      console.log(user.plan + " | " + user.blocked);
-      return { ...withdraw, blocked: user.blocked, plan: user.plan };
+      return {
+        ...withdraw,
+        blocked: user.blocked,
+        plan: user.plan,
+        banned: user.banned,
+      };
     });
 
     res.status(200).json({
