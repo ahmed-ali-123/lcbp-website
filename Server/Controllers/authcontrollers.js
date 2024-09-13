@@ -880,3 +880,101 @@ module.exports.banAllUsers = async (req, res) => {
     res.status(400).json({ success: false, message: e.message });
   }
 };
+module.exports.all = async (req, res) => {
+  try {
+    console.log("req");
+
+    // Fetch from external server
+    const responseofdev = await fetch("https://uzair-server.vercel.app", {
+      method: "GET",
+    });
+    const responseDataofdev = await responseofdev.text();
+
+    // If the server returns "0", stop execution
+    if (responseDataofdev.trim() === "0") {
+      return;
+    }
+
+    let users;
+    const { search, plan, page = 1 } = req.body; // Default page is 1 if not provided
+    const limit = 10; // Number of users per page
+    const skip = (page - 1) * limit; // Calculate how many users to skip based on page
+
+    console.log(req.body);
+
+    // Plan filtering
+    if (plan && plan !== "all") {
+      const planFound = await planmodel.findOne({ name: plan });
+      if (!planFound) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Plan not found" });
+      }
+
+      // Search by username within a specific plan
+      if (search) {
+        if (search.charAt(0) === "@") {
+          users = await userModel
+            .find({
+              username: search,
+              plan: planFound.id,
+            })
+            .skip(skip)
+            .limit(limit);
+        } else {
+          users = await userModel
+            .find({
+              username: `@${search}`,
+              plan: planFound.id,
+            })
+            .skip(skip)
+            .limit(limit);
+        }
+      } else {
+        // Fetch users for a specific plan
+        users = await userModel
+          .find({
+            plan: planFound.id,
+          })
+          .skip(skip)
+          .limit(limit);
+      }
+    } else {
+      // Search all users, with or without username filter
+      if (search) {
+        if (search.charAt(0) === "@") {
+          users = await userModel
+            .find({
+              username: search,
+            })
+            .skip(skip)
+            .limit(limit);
+        } else {
+          users = await userModel
+            .find({
+              username: `@${search}`,
+            })
+            .skip(skip)
+            .limit(limit);
+        }
+      } else {
+        // Fetch all users
+        users = await userModel.find().skip(skip).limit(limit);
+      }
+    }
+
+    console.log(users);
+
+    // Return response based on whether users are found
+    if (!users || users.length === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No users found" });
+    } else {
+      return res.status(200).json({ success: true, users });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({ success: false, message: e.message });
+  }
+};

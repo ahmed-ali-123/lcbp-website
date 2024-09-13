@@ -32,6 +32,7 @@ import CutFine from "./pages/CutFine";
 import About from "./pages/About";
 import EditAbout from "./pages/EditAbout";
 import Terms from "./pages/Terms";
+import SeeAllUsers from "./pages/SeeAllUsersInProgram";
 
 const router = createBrowserRouter([
   {
@@ -172,6 +173,10 @@ const router = createBrowserRouter([
       {
         path: "/updatestaticvalues",
         element: <UpdateValues />,
+      },
+      {
+        path: "/see",
+        element: <SeeAllUsers />,
       },
       {
         path: "/editplan",
