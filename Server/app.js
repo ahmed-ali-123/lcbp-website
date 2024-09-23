@@ -9,6 +9,8 @@ const transactionsroute = require("./Routes/transactionsroute");
 const withdrawroute = require("./Routes/withdrawroute");
 const chatroute = require("./Routes/chatroute");
 const classroute = require("./Routes/Classesroute");
+const productRoute = require("./Routes/productRoutes");
+const orderRoute = require("./Routes/orderRoute");
 require("dotenv").config();
 
 const app = express();
@@ -39,6 +41,8 @@ app.use("/api/transactions", transactionsroute);
 app.use("/api/withdraws", withdrawroute);
 app.use("/api/chat", chatroute);
 app.use("/api/class", classroute);
+app.use("/api/product", productRoute);
+app.use("/api/order", orderRoute);
 
 app.listen(5000, async () => {
   try {

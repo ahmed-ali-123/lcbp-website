@@ -33,6 +33,9 @@ import About from "./pages/About";
 import EditAbout from "./pages/EditAbout";
 import Terms from "./pages/Terms";
 import SeeAllUsers from "./pages/SeeAllUsersInProgram";
+import LcShop from "./pages/LcShop";
+import LcManage from "./pages/LcManage";
+import LcProduct from "./pages/LcProduct";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <HomePage />,
+      },
+      {
+        path: "/product/:id",
+        element: <LcProduct />,
       },
       {
         path: "/login",
@@ -68,6 +75,16 @@ const router = createBrowserRouter([
         path: "/termsandservices",
         element: <Terms />,
         children: [],
+      },
+      {
+        path: "/manageshop",
+        element: <LcManage />,
+        children: [
+          {
+            path: "/manageshop/:state",
+            element: <LcManage />,
+          },
+        ],
       },
       {
         path: "/editaboutvaluesandothertext",
@@ -177,6 +194,10 @@ const router = createBrowserRouter([
       {
         path: "/see",
         element: <SeeAllUsers />,
+      },
+      {
+        path: "/shop",
+        element: <LcShop />,
       },
       {
         path: "/editplan",

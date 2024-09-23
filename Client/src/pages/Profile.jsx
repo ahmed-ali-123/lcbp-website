@@ -7,6 +7,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import LocalAtmIcon from "@mui/icons-material/LocalAtm";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import SchoolIcon from "@mui/icons-material/School";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -72,6 +73,15 @@ const Profile = () => {
         >
           <SchoolIcon />
           <h1>Join Classes</h1>
+        </div>
+        <div
+          className="profileoption"
+          onClick={() => {
+            navigate("/shop");
+          }}
+        >
+          <ShoppingCartIcon />
+          <h1>LC Shop</h1>
         </div>
       </div>
     </div>
