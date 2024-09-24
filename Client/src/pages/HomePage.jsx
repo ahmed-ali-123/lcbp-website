@@ -12,7 +12,6 @@ function HomePage() {
   const userid = localStorage.getItem("AUTHUSERUNIQUEID");
   const apiUrl = import.meta.env.VITE_API_URL;
   const [data, setData] = useState([]);
-  console.log("Vercel one");
   const load = async () => {
     try {
       let res = await fetch(`${apiUrl}/api/gig/load`, {
@@ -139,6 +138,16 @@ function HomePage() {
                   style={{ cursor: "pointer" }}
                 >
                   About
+                  <i className="icon ion-ios-arrow-forward icon-mobile"></i>
+                </a>
+              </li>
+              <li className="nav-item nav-custom-link">
+                <a
+                  className="nav-link"
+                  onClick={() => navigate("/shop")}
+                  style={{ cursor: "pointer" }}
+                >
+                  Shop
                   <i className="icon ion-ios-arrow-forward icon-mobile"></i>
                 </a>
               </li>

@@ -8,7 +8,6 @@ const lcProduct = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [loading2, setLoading2] = useState(false);
-
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [product, setProduct] = useState(null);
@@ -21,6 +20,8 @@ const lcProduct = () => {
     imageurl: "",
   });
   const [selectedImage, setSelectedImage] = useState(null);
+  const userid = localStorage.getItem("AUTHUSERUNIQUEID");
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "phone") {
@@ -219,9 +220,11 @@ const lcProduct = () => {
               <button
                 className="orderbutton"
                 onClick={() => {
-                  setOpen((prev) => !prev);
-                  // scroll to bottom
-                  window.scrollTo(0, document.body.scrollHeight + 1000);
+                  if (userid) {
+                    setOpen((prev) => !prev);
+                  } else {
+                    navigate("/login");
+                  }
                 }}
               >
                 Order
