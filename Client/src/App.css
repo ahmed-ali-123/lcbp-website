@@ -184,3 +184,20 @@
 .addProductDiv h5 {
   text-align: center;
 }
+.selectpayment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.selectpayment > * {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+}
+.selectpayment input {
+  width: 20px;
+}
+.selectpayment label {
+  margin: 0;
+}

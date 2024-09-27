@@ -19,11 +19,13 @@ const lcProduct = () => {
     item: "",
     imageurl: "",
   });
+  const [method, setMethod] = useState("COD");
   const [selectedImage, setSelectedImage] = useState(null);
   const userid = localStorage.getItem("AUTHUSERUNIQUEID");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(method);
     if (name === "phone") {
       const allowedChars = /^[0-9\b.]+$/;
       if (allowedChars.test(value)) {
@@ -74,55 +76,76 @@ const lcProduct = () => {
         toast.error("Please fill all fields");
         return;
       }
-      if (!selectedImage) {
-        throw new Error("No image selected.");
-      }
-      if (
-        !selectedImage.type ||
-        !(
-          selectedImage.type === "image/jpeg" ||
-          selectedImage.type === "image/png" ||
-          selectedImage.type === "image/jpg"
-        )
-      ) {
-        throw new Error(
-          "Invalid image format. Only JPEG, PNG, and JPG formats are allowed."
-        );
-      }
-      if (!id) {
-        throw new Error("Missing product id");
-      }
-      if (loading2) {
-        return;
+      let data1;
+      if (method === "EasyPaisa") {
+        if (!selectedImage) {
+          throw new Error("No image selected.");
+        }
+        if (
+          !selectedImage.type ||
+          !(
+            selectedImage.type === "image/jpeg" ||
+            selectedImage.type === "image/png" ||
+            selectedImage.type === "image/jpg"
+          )
+        ) {
+          throw new Error(
+            "Invalid image format. Only JPEG, PNG, and JPG formats are allowed."
+          );
+        }
+        if (!id) {
+          throw new Error("Missing product id");
+        }
+        if (loading2) {
+          return;
+        }
+        setLoading2(true);
+        let image = new FormData();
+        image.append("file", selectedImage);
+        image.append("cloud_name", "dbntul88v");
+        image.append("upload_preset", "pvkxzd6k");
+        const url = "https://api.cloudinary.com/v1_1/dbntul88v/image/upload";
+        const resp = await fetch(url, {
+          method: "POST",
+          body: image,
+        });
+        data1 = await resp.json();
+        if (!data1.url) {
+          throw new Error("Error with image");
+        }
       }
       setLoading2(true);
-      let image = new FormData();
-      image.append("file", selectedImage);
-      image.append("cloud_name", "dbntul88v");
-      image.append("upload_preset", "pvkxzd6k");
-      const url = "https://api.cloudinary.com/v1_1/dbntul88v/image/upload";
-      const resp = await fetch(url, {
-        method: "POST",
-        body: image,
-      });
-      const data1 = await resp.json();
-      if (!data1.url) {
-        throw new Error("Error with image");
-      }
 
       console.log(data);
-      const response = await fetch(`${apiUrl}/api/order/add`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...data,
-          item: id,
-          imageurl: data1.url,
-          itemname: product.title,
-        }),
-      });
+      let response;
+      if (method === "COD") {
+        response = await fetch(`${apiUrl}/api/order/add`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...data,
+            item: id,
+            itemname: product.title,
+            method,
+          }),
+        });
+      } else {
+        response = await fetch(`${apiUrl}/api/order/add`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...data,
+            item: id,
+            imageurl: data1.url,
+            itemname: product.title,
+            method,
+          }),
+        });
+      }
       const res = await response.json();
       if (res.success) {
         toast.success("Order placed successfully");
@@ -155,14 +178,43 @@ const lcProduct = () => {
         <>
           {open ? (
             <div className="addProductDiv">
-              <h3>
-                Please send <span>{product?.price}pkr</span> to{" "}
-              </h3>
-              <h3 className="addProductdetails">
-                <b>Easypaisa</b>
-                <b>Rashid Rashid</b>
-                <b>03104998317</b>
-              </h3>
+              {method === "COD" ? (
+                <h3>Cash on delivery</h3>
+              ) : (
+                <>
+                  <h3>
+                    Please send <span>{product?.price}pkr</span> to{" "}
+                  </h3>
+                  <h3 className="addProductdetails">
+                    <b>Easypaisa</b>
+                    <b>Rashid Rashid</b>
+                    <b>03104998317</b>
+                  </h3>
+                </>
+              )}
+              <div className="selectpayment">
+                <div className="inp1">
+                  <input
+                    type="radio"
+                    name="method"
+                    value="COD"
+                    id="cod"
+                    onChange={(e) => setMethod(e.target.value)}
+                    defaultChecked
+                  />{" "}
+                  <label htmlFor="cod">Cash on delivery</label>
+                </div>
+                <div className="inp1">
+                  <input
+                    type="radio"
+                    name="method"
+                    value="EasyPaisa"
+                    id="easy"
+                    onChange={(e) => setMethod(e.target.value)}
+                  />{" "}
+                  <label htmlFor="easy">Easypaisa</label>
+                </div>
+              </div>
               <h5>
                 The product will be deliverd to you within the next 2-3 days
               </h5>
@@ -175,7 +227,7 @@ const lcProduct = () => {
               />
               <input
                 type="text"
-                placeholder="Phone number"
+                placeholder="Reciever's Phone number"
                 name="phone"
                 onChange={handleChange}
                 value={data.phone}
@@ -187,13 +239,15 @@ const lcProduct = () => {
                 onChange={handleChange}
                 value={data.address}
               />
+              {method === "EasyPaisa" ? (
+                <input
+                  type="file"
+                  placeholder="upload image"
+                  accept="image/png image/jpeg image/jpg"
+                  onChange={(e) => setSelectedImage(e.target.files[0])}
+                />
+              ) : null}
 
-              <input
-                type="file"
-                placeholder="upload image"
-                accept="image/png image/jpeg image/jpg"
-                onChange={(e) => setSelectedImage(e.target.files[0])}
-              />
               <button onClick={addOrder}>
                 {loading2 ? "Loading..." : "Order"}
               </button>
@@ -233,6 +287,14 @@ const lcProduct = () => {
           ) : (
             <>loading</>
           )}
+
+          <h3
+            style={{
+              marginBottom: "20px",
+            }}
+          >
+            Help Line number : 03104998317{" "}
+          </h3>
         </>
       )}
     </div>

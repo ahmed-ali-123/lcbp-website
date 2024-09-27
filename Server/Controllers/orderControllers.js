@@ -7,8 +7,8 @@ module.exports.addOrder = async (req, res) => {
       !req.body.phone ||
       !req.body.address ||
       !req.body.item ||
-      !req.body.imageurl ||
-      !req.body.itemname
+      !req.body.itemname ||
+      !req.body.method
     ) {
       return res
         .status(400)

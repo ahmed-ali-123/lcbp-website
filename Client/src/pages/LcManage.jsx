@@ -241,6 +241,7 @@ const LcManage = () => {
                   <th>Phone number</th>
                   <th>Address</th>
                   <th>Item</th>
+                  <th>Method</th>
                   <th>Proof</th>
                 </tr>
               </thead>
@@ -265,18 +266,23 @@ const LcManage = () => {
                     >
                       {item.itemname}
                     </td>
-                    <td
-                      onClick={() => {
-                        window.open(item.imageurl, "_blank");
-                      }}
-                      style={{
-                        cursor: "pointer",
-                        textDecoration: "underline",
-                        color: "blue",
-                      }}
-                    >
-                      image
-                    </td>
+                    <td>{item.method}</td>
+                    {item.imageurl ? (
+                      <td
+                        onClick={() => {
+                          window.open(item.imageurl, "_blank");
+                        }}
+                        style={{
+                          cursor: "pointer",
+                          textDecoration: "underline",
+                          color: "blue",
+                        }}
+                      >
+                        image
+                      </td>
+                    ) : (
+                      <td>No Image</td>
+                    )}
 
                     <button
                       className="banintable unban"

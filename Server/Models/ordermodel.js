@@ -23,7 +23,12 @@ const productSchema = new mongoose.Schema({
   },
   imageurl: {
     type: "string",
-    required: [true, "Image url is required."],
+    required: false,
+  },
+  method: {
+    type: "string",
+    required: false,
+    default: "COD",
   },
   fulfilled: {
     type: "boolean",
