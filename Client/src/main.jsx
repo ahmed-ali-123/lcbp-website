@@ -36,6 +36,7 @@ import SeeAllUsers from "./pages/SeeAllUsersInProgram";
 import LcShop from "./pages/LcShop";
 import LcManage from "./pages/LcManage";
 import LcProduct from "./pages/LcProduct";
+import "./App.css";
 
 const router = createBrowserRouter([
   {
