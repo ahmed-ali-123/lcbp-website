@@ -10,6 +10,9 @@
   justify-content: center;
   flex-direction: column;
 }
+.aboutpage * {
+  text-align: center;
+}
 .aboutPage > p {
   margin: 20px 0 50px 0;
   width: 100%;

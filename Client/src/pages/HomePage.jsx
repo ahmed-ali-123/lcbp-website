@@ -144,6 +144,16 @@ function HomePage() {
               <li className="nav-item nav-custom-link">
                 <a
                   className="nav-link"
+                  onClick={() => navigate("/message")}
+                  style={{ cursor: "pointer" }}
+                >
+                  Today's message
+                  <i className="icon ion-ios-arrow-forward icon-mobile"></i>
+                </a>
+              </li>
+              <li className="nav-item nav-custom-link">
+                <a
+                  className="nav-link"
                   onClick={() => navigate("/shop")}
                   style={{ cursor: "pointer" }}
                 >

@@ -66,6 +66,16 @@ const valueSchema = new mongoose.Schema({
     required: false,
     default: 0,
   },
+  newMessage: {
+    type: "string",
+    required: false,
+    default: "",
+  },
+  newHeading: {
+    type: "string",
+    required: false,
+    default: "",
+  },
 });
 
 module.exports = mongoose.model("values", valueSchema);

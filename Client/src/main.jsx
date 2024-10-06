@@ -30,7 +30,9 @@ import ManageClasses from "./pages/ManageClasses";
 import ManageClass from "./pages/ManageClass";
 import CutFine from "./pages/CutFine";
 import About from "./pages/About";
+import About2 from "./pages/About2";
 import EditAbout from "./pages/EditAbout";
+import EditMessage from "./pages/EditMessage";
 import Terms from "./pages/Terms";
 import SeeAllUsers from "./pages/SeeAllUsersInProgram";
 import LcShop from "./pages/LcShop";
@@ -73,6 +75,11 @@ const router = createBrowserRouter([
         children: [],
       },
       {
+        path: "/message",
+        element: <About2 />,
+        children: [],
+      },
+      {
         path: "/termsandservices",
         element: <Terms />,
         children: [],
@@ -90,6 +97,11 @@ const router = createBrowserRouter([
       {
         path: "/editaboutvaluesandothertext",
         element: <EditAbout />,
+        children: [],
+      },
+      {
+        path: "/editdailymessage",
+        element: <EditMessage />,
         children: [],
       },
       {
